@@ -222,7 +222,7 @@ modify_xrayr_config() {
         CLOUDFLARE_EMAIL=$input
         CLOUDFLARE_GLOBAL_API_KEY=$(echo $CLOUDFLARE_GLOBAL_API_KEY | sed -e 's/[]\/&$*.^[]/\\&/g')
         CLOUDFLARE_EMAIL=$(echo $CLOUDFLARE_EMAIL | sed -e 's/[]\/&$*.^[]/\\&/g')
-        sed -i "s/USER_CLOUDFLARE_GLOBAL_API_KEY/${CLOUDFLARE_GLOBAL_API_KEY}/g" /tmp/config.yml
+        sed -i "s/USER_CLOUDFLARE_API_KEY/${CLOUDFLARE_GLOBAL_API_KEY}/g" /tmp/config.yml
         sed -i "s/USER_CLOUDFLARE_EMAIL/${CLOUDFLARE_EMAIL}/g" /tmp/config.yml
         ;;
     *)
@@ -335,14 +335,15 @@ show_config() {
     
     V2BOARD_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
     V2BOARD_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    NODE_IP=$(curl -s ip.sb)
     NODE_ID=$(cat config.yml | grep "NodeID" | awk -F ':' '{print $2}')
-    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}')
-    CertMode=$(cat config.yml | grep "CertMode" | awk -F ':' '{print $2}')
-    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}')
+    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    CertMode=$(cat config.yml | grep "CertMode" | head -n 1 | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
     KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}')
     NODE_DOMAIN=$(cat config.yml | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}')
-    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CloudflareApiKey" | awk -F ':' '{print $2}')
+    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CLOUDFLARE_EMAIL" | awk -F ':' '{print $2}')
+    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CLOUDFLARE_API_KEY" | awk -F ':' '{print $2}')
 
     echo -e "
     v2board前端域名：${green}${V2BOARD_URL}${plain}
