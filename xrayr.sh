@@ -147,7 +147,7 @@ modify_xrayr_config() {
     if [[ $input != "" ]]; then
         V2BOARD_API_KEY=$input
     fi
-    sed -i 's|USER_V2BOARD_DOMAIN|${V2BOARD_URL}|g' /tmp/config.yml
+    awk "{sub(/USER_V2BOARD_DOMAIN/,${V2BOARD_URL})};print $0"
     sed -i "s/USER_V2BOARD_API_KEY/${V2BOARD_API_KEY}/g" /tmp/config.yml
     echo -e "> 当前域名: ${green}${V2BOARD_URL}${plain}"
     echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
@@ -198,7 +198,7 @@ modify_xrayr_config() {
     1)
         echo -e "不申请证书"
         sed -i "s/USER_CERT_MODE/none/g" /tmp/config.yml
-        ;;
+        ;;     
     2)
         echo -e "自备证书文件"
         sed -i "s/USER_CERT_MODE/file/g" /tmp/config.yml
@@ -231,7 +231,7 @@ modify_xrayr_config() {
         ;;
     esac
 
-    if [[ -z "${TLS}" ]]; then
+    if [ -z "${TLS}" ]; then
         echo -e "> 不申请证书"
     else
         read -e -r -p "请输入域名：" input
@@ -339,6 +339,13 @@ before_show_menu() {
     show_menu
 }
 
+clean_all() {
+    clean_all() {
+    if [ -z "$(ls -A ${XRAYR_PATH})" ]; then
+        rm -rf ${XRAYR_PATH}
+    fi
+}
+}
 
 show_menu() {
     echo -e "
