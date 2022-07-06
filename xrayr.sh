@@ -220,6 +220,8 @@ modify_xrayr_config() {
         CLOUDFLARE_GLOBAL_API_KEY=$input
         read -e -r -p "请输入cloudflare的email：" input
         CLOUDFLARE_EMAIL=$input
+        CLOUDFLARE_GLOBAL_API_KEY=$(echo $CLOUDFLARE_GLOBAL_API_KEY | sed -e 's/[]\/&$*.^[]/\\&/g')
+        CLOUDFLARE_EMAIL=$(echo $CLOUDFLARE_EMAIL | sed -e 's/[]\/&$*.^[]/\\&/g')
         sed -i "s/USER_CLOUDFLARE_GLOBAL_API_KEY/${CLOUDFLARE_GLOBAL_API_KEY}/g" /tmp/config.yml
         sed -i "s/USER_CLOUDFLARE_EMAIL/${CLOUDFLARE_EMAIL}/g" /tmp/config.yml
         ;;
