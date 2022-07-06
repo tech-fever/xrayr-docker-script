@@ -159,10 +159,30 @@ modify_xrayr_config() {
     sed -i "s/USER_NODE_ID/${NODE_ID}/g" /tmp/config.yml
 
     ## read NODE_TYPE
-    read -e -r -p "请输入 NODE_TYPE（必须与v2board设定的保持一致）：" input
-    NODE_TYPE=$input
-    echo -e "节点类型为: ${green}${NODE_TYPE}${plain}"
-    sed -i "s/USER_NODE_TYPE/${NODE_TYPE}/g" /tmp/config.yml
+    echo -e "
+    ${green}节点类型：${plain}
+    ${green}1.${plain}  V2ray
+    ${green}2.${plain}  ShadowSocks
+    ${green}3.${plain}  Trojan
+    "
+    read -e -r -p "请输入 选择[1-3]" num
+    case "$num" in
+    1)
+        NODE_TYPE="V2ray"
+        ;;
+    2)
+        NODE_TYPE="Shadowsocks"
+        ;;
+    3)
+        NODE_TYPE="Trojan"
+        ;;
+    *)
+        echo -e "${red}请输入正确的选择[1-3]${plain}"
+        exit 1
+        ;;
+    esac
+    sed -i "s/USER_NODE_TYPE/${NODE_TYPE}/g" /tmp/config.yml && echo -e "成功修改节点类型为: ${green}${NODE_TYPE}${plain}"
+    
 
     ## read tls
     echo -e "
@@ -170,7 +190,7 @@ modify_xrayr_config() {
     ${green}1.${plain}  (none)不申请证书
     ${green}2.${plain}  (file)自备证书文件
     ${green}3.${plain}  (http)脚本通过http方式申请证书（需要提前解析域名到本机ip并开启80端口）
-    ${green}4.${plain}  (dns)脚本通过dns方式申请证书（暂时只支持cloudflare，需要cloudflare的global api key和email）
+    ${green}4.${plain}  (dns)脚本通过dns方式申请证书（脚本暂时只支持cloudflare，需要cloudflare的global api key和email）
     "
 
     read -e -r -p "请输入选择[1-4]：" num
