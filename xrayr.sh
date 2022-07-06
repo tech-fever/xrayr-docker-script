@@ -155,7 +155,7 @@ modify_xrayr_config() {
     echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
 
     ## read NODE_ID
-    read -e -r -p "请输入 NODE_ID（必须与v2board设定的保持一致）：" input
+    read -e -r -p "请输入节点ID（必须与v2board设定的保持一致）：" input
     NODE_ID=$input
     echo -e "节点ID为: ${green}${NODE_ID}${plain}"
     sed -i "s/USER_NODE_ID/${NODE_ID}/g" /tmp/config.yml
@@ -167,7 +167,7 @@ modify_xrayr_config() {
     ${green}2.${plain}  ShadowSocks
     ${green}3.${plain}  Trojan
     "
-    read -e -r -p "请输入 选择[1-3]" num
+    read -e -r -p "请输入选择[1-3]：" num
     case "$num" in
     1)
         NODE_TYPE="V2ray"
@@ -190,7 +190,7 @@ modify_xrayr_config() {
     echo -e "
     ${green}证书申请方式：${plain}
     ${green}1.${plain}  (none)不申请证书
-    ${green}2.${plain}  (file)自备证书文件
+    ${green}2.${plain}  (file)自备证书文件（之后在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改或使用nginx进行tls配置）
     ${green}3.${plain}  (http)脚本通过http方式申请证书（需要提前解析域名到本机ip并开启80端口）
     ${green}4.${plain}  (dns)脚本通过dns方式申请证书（脚本暂时只支持cloudflare，需要cloudflare的global api key和email）
     "
@@ -203,6 +203,7 @@ modify_xrayr_config() {
         ;;     
     2)
         echo -e "自备证书文件"
+        echo -e "在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改 ${green}节点域名.cert 节点域名.key${plain}文件或使用nginx进行tls配置）"
         sed -i "s/USER_CERT_MODE/file/g" /tmp/config.yml
         TLS=true
         ;;
