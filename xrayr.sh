@@ -341,7 +341,7 @@ show_config() {
     CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}')
     KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}')
     NODE_DOMAIN=$(cat config.yml | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}'')
+    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}')
     CLOUDFLARE_API_KEY=$(cat config.yml | grep "CloudflareApiKey" | awk -F ':' '{print $2}')
 
     echo -e "
@@ -399,8 +399,7 @@ show_menu() {
     ${green}6.${plain}  查看xrayr日志
     ${green}7.${plain}  查看xrayr配置
     ${green}8.${plain}  卸载xrayr
-    ————————————————-
-    ————————————————-
+    ————————————————
     ${green}0.${plain}  退出脚本
     "
     echo && read -ep "请输入选择 [0-7]: " num
