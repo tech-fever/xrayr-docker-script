@@ -223,6 +223,9 @@ modify_xrayr_config() {
         sed -i "s/USER_NODE_DOMAIN/${NODE_DOMAIN}/g" /tmp/config.yml
     fi
 
+    # replace config.yml
+    mv /tmp/config.yml $XRAYR_PATH/config.yml
+    echo -e "xrayr配置 ${green}修改成功，请稍等重启生效${plain}"
     # get NODE_IP
     NODE_IP=`curl -s https://ipinfo.io/ip`
     echo -e "> 当前域名: ${green}${V2BOARD_DOMAIN}${plain}"
@@ -234,6 +237,8 @@ modify_xrayr_config() {
     fi
     echo -e "节点IP为：${yellow}${NODE_IP}${plain}"
 
+    restart_and_update
+    
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
