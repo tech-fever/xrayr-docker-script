@@ -20,8 +20,8 @@ Get_Docker_URL="https://get.docker.com"
 # Get_Docker_Argu="--mirror Aliyun"
 GITHUB_URL="github.com"
 
-# 请填写你的v2board域名，例如：https://v2board.com
-V2BOARD_URL="https://v2board.com/"
+# 请填写你的v2board域名，例如：https://v2board.com/
+V2BOARD_URL=https://v2board.com/"
 # 请填写前端的api key，例如：123456789
 V2BOARD_API_KEY="your_api_key"
 
@@ -148,9 +148,9 @@ modify_xrayr_config() {
     if [[ $input != "" ]]; then
         V2BOARD_API_KEY=$input
     fi
-    sed -i "s|USER_V2BOARD_DOMAIN|${V2BOARD_URL}|g" /tmp/config.yml
+    sed -i 's|USER_V2BOARD_DOMAIN|${V2BOARD_URL}|g' /tmp/config.yml
     sed -i "s/USER_V2BOARD_API_KEY/${V2BOARD_API_KEY}/g" /tmp/config.yml
-    echo -e "> 当前域名: ${green}${V2BOARD_DOMAIN}${plain}"
+    echo -e "> 当前域名: ${green}${V2BOARD_URL}${plain}"
     echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
 
     ## read NODE_ID
