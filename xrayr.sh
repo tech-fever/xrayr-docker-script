@@ -242,6 +242,7 @@ modify_xrayr_config() {
 
     # replace config.yml
     mv /tmp/config.yml $XRAYR_PATH/config.yml
+    mv /tmp/docker-compose.yml $XRAYR_PATH/docker-compose.yml
     echo -e "xrayr配置 ${green}修改成功，请稍等重启生效${plain}"
     # get NODE_IP
     NODE_IP=`curl -s https://ipinfo.io/ip`
