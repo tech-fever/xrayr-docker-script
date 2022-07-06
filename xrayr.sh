@@ -402,7 +402,7 @@ show_menu() {
     ————————————————
     ${green}0.${plain}  退出脚本
     "
-    echo && read -ep "请输入选择 [0-7]: " num
+    echo && read -ep "请输入选择 [0-8]: " num
 
     case "${num}" in
     0)
@@ -433,7 +433,7 @@ show_menu() {
         uninstall
         ;;
     *)
-        echo -e "${red}请输入正确的数字 [0-7]${plain}"
+        echo -e "${red}请输入正确的数字 [0-8]${plain}"
         ;;
     esac
 }
