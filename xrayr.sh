@@ -148,7 +148,8 @@ modify_xrayr_config() {
         V2BOARD_API_KEY=$input
     fi
     V2BOARD_URL=$(echo $V2BOARD_URL | sed -e 's/[]\/$*.^[]/\\&/g')
-    sed -i "s/USER_V2BOARD_DOMAIN/V2BOARD_URL/g" /tmp/config.yml
+    V2BOARD_API_KEY=$(echo $V2BOARD_API_KEY | sed -e 's/[]\/$*.^[]/\\&/g')
+    sed -i "s/USER_V2BOARD_DOMAIN/${V2BOARD_URL}/g" /tmp/config.yml
     sed -i "s/USER_V2BOARD_API_KEY/${V2BOARD_API_KEY}/g" /tmp/config.yml
     echo -e "> 当前域名: ${green}${V2BOARD_URL}${plain}"
     echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
