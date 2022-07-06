@@ -189,8 +189,8 @@ modify_xrayr_config() {
     ## read tls
     echo -e "
     ${green}证书申请方式：${plain}
-    ${green}1.${plain}  (none)不申请证书
-    ${green}2.${plain}  (file)自备证书文件（之后在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改或使用nginx进行tls配置）
+    ${green}1.${plain}  (none)不申请证书（如果使用nginx进行tls配置请选择此项）
+    ${green}2.${plain}  (file)自备证书文件（之后在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改）
     ${green}3.${plain}  (http)脚本通过http方式申请证书（需要提前解析域名到本机ip并开启80端口）
     ${green}4.${plain}  (dns)脚本通过dns方式申请证书（脚本暂时只支持cloudflare，需要cloudflare的global api key和email）
     "
@@ -203,7 +203,7 @@ modify_xrayr_config() {
         ;;     
     2)
         echo -e "自备证书文件"
-        echo -e "在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改 ${green}节点域名.cert 节点域名.key${plain}文件或使用nginx进行tls配置）"
+        echo -e "在${green}${XRAYRPATH}/XrayR/cert/${plain}目录下修改 ${green}节点域名.cert 节点域名.key${plain}文件）"
         sed -i "s/USER_CERT_MODE/file/g" /tmp/config.yml
         TLS=true
         ;;
@@ -251,10 +251,8 @@ modify_xrayr_config() {
     echo -e "xrayr配置 ${green}修改成功，请稍等重启生效${plain}"
     # get NODE_IP
     NODE_IP=`curl -s https://ipinfo.io/ip`
-    echo -e "> 当前域名: ${green}${V2BOARD_DOMAIN}${plain}"
-    echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
-    echo -e "> 节点ID为：${yellow}${NODE_ID}${plain}"
-    echo -e "> 节点类型为: ${green}${NODE_TYPE}${plain}"
+    
+    
     if [[ -z "${TLS}" ]]; then
         echo -e "> 不申请证书"
     else
@@ -262,7 +260,11 @@ modify_xrayr_config() {
     fi
     echo -e "> 节点IP为：${yellow}${NODE_IP}${plain}"
 
-    restart_and_update
+    # show config
+    show_config 0
+
+    # restart xrayr
+    restart_and_update 0
 
     if [[ $# == 0 ]]; then
         before_show_menu
@@ -326,6 +328,41 @@ show_log() {
     fi
 }
 
+show_config() {
+    echo -e "> 查看xrayr配置"
+
+    cd $XRAYR_PATH
+    
+    V2BOARD_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
+    V2BOARD_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    NODE_ID=$(cat config.yml | grep "NodeId" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CertMode=$(cat config.yml | grep "CertMode" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    NODE_DOMAIN=$(cat config.yml | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CloudflareApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+
+    echo -e "
+    > v2board配置为: 
+    v2board前端域名：${green}${V2BOARD_URL}${plain}
+    v2board api key：${green}${V2BOARD_API_KEY}${plain}
+    节点IP：${green}${NODE_IP}${plain}
+    节点ID：${green}${NODE_ID}${plain}
+    节点类型：${green}${NODE_TYPE}${plain}
+    证书模式：${green}${CertMode}${plain}
+    证书文件：${green}${CertFile}${plain}
+    私钥文件：${green}${KeyFile}${plain}
+    节点域名：${green}${NODE_DOMAIN}${plain}
+    Cloudflare Email：${green}${CLOUDFLARE_EMAIL}${plain}
+    Cloudflare API Key：${green}${CLOUDFLARE_API_KEY}${plain}
+    "
+    if [[ $# == 0 ]]; then
+        before_show_menu
+    fi
+}
+
 uninstall() {
     echo -e "> 卸载xrayr"
 
@@ -360,8 +397,9 @@ show_menu() {
     ${green}3.${plain}  启动xrayr
     ${green}4.${plain}  停止xrayr
     ${green}5.${plain}  重启并更新xrayr（没有更新版本啦！）
-    ${green}6.${plain}  查看xrayr
-    ${green}7.${plain}  卸载xrayr
+    ${green}6.${plain}  查看xrayr日志
+    ${green}7.${plain}  查看xrayr配置
+    ${green}8.${plain}  卸载xrayr
     ————————————————-
     ————————————————-
     ${green}0.${plain}  退出脚本
@@ -391,6 +429,9 @@ show_menu() {
         show_log
         ;;
     7)
+        show_config
+        ;;
+    8)
         uninstall
         ;;
     *)
