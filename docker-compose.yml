@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  xrayr:
+    image: crackair/xrayr:latest
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./XrayR/:/etc/XrayR/
+      - ./config.yml:/etc/XrayR/config.yml
