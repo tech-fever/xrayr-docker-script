@@ -335,17 +335,16 @@ show_config() {
     
     V2BOARD_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
     V2BOARD_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    NODE_ID=$(cat config.yml | grep "NodeId" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CertMode=$(cat config.yml | grep "CertMode" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    NODE_ID=$(cat config.yml | grep "NodeID" | awk -F ':' '{print $2}')
+    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}')
+    CertMode=$(cat config.yml | grep "CertMode" | awk -F ':' '{print $2}')
+    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}')
+    KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}')
     NODE_DOMAIN=$(cat config.yml | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CloudflareApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CloudflareEmail" | awk -F ':' '{print $2}'')
+    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CloudflareApiKey" | awk -F ':' '{print $2}')
 
     echo -e "
-    > v2board配置为: 
     v2board前端域名：${green}${V2BOARD_URL}${plain}
     v2board api key：${green}${V2BOARD_API_KEY}${plain}
     节点IP：${green}${NODE_IP}${plain}
