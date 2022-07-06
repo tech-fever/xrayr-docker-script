@@ -26,10 +26,6 @@ V2BOARD_URL="https://v2board.com/"
 V2BOARD_API_KEY="your_api_key"
 
 pre_check() {
-    # update apt
-    apt update
-    apt install curl wget -y
-
     # check root
     [[ $EUID -ne 0 ]] && echo -e "${red}错误: ${plain} 必须使用root用户运行此脚本！\n" && exit 1
 
@@ -238,7 +234,7 @@ modify_xrayr_config() {
     echo -e "节点IP为：${yellow}${NODE_IP}${plain}"
 
     restart_and_update
-    
+
     if [[ $# == 0 ]]; then
         before_show_menu
     fi
