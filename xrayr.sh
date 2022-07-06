@@ -212,9 +212,11 @@ modify_xrayr_config() {
     esac
 
     if [[ -z "${TLS}" ]]; then
+        echo -e "> 不申请证书"
+    else
         read -e -r -p "请输入域名：" input
         NODE_DOMAIN=$input
-        echo -e "节点域名为: ${green}${NODE_DOMAIN}${plain}"
+        echo -e "> 节点域名为: ${green}${NODE_DOMAIN}${plain}"
         sed -i "s/USER_NODE_DOMAIN/${NODE_DOMAIN}/g" /tmp/config.yml
     fi
 
@@ -225,12 +227,14 @@ modify_xrayr_config() {
     NODE_IP=`curl -s https://ipinfo.io/ip`
     echo -e "> 当前域名: ${green}${V2BOARD_DOMAIN}${plain}"
     echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
-    echo -e "节点ID为：${yellow}${NODE_ID}${plain}"
-    echo -e "节点类型为: ${green}${NODE_TYPE}${plain}"
+    echo -e "> 节点ID为：${yellow}${NODE_ID}${plain}"
+    echo -e "> 节点类型为: ${green}${NODE_TYPE}${plain}"
     if [[ -z "${TLS}" ]]; then
-        echo -e "节点域名为：${yellow}${NODE_DOMAIN}${plain}"
+        echo -e "> 不申请证书"
+    else
+        echo -e "> 节点域名为：${yellow}${NODE_DOMAIN}${plain}"
     fi
-    echo -e "节点IP为：${yellow}${NODE_IP}${plain}"
+    echo -e "> 节点IP为：${yellow}${NODE_IP}${plain}"
 
     restart_and_update
 
