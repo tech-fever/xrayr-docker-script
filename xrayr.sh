@@ -137,6 +137,29 @@ modify_xrayr_config() {
     fi
 
     # modify config.yml
+    ## modify panel type
+    ## choose from: SSpanel, V2board, PMpanel, Proxypanel
+    echo -e "> 请选择面板类型"
+    echo -e "1. SSpanel"
+    echo -e "2. V2board"
+    echo -e "3. PMpanel"
+    echo -e "4. Proxypanel"
+    read -e -p "请输入数字 [1-4]: " panel_type
+    case $panel_type in
+    1)
+        sed -i "s/USER_PANEL_TYPE/SSpanel/g" /tmp/config.yml
+        ;;
+    2)
+        sed -i "s/USER_PANEL_TYPE/V2board/g" /tmp/config.yml
+        ;;
+    3)
+        sed -i "s/USER_PANEL_TYPE/PMpanel/g" /tmp/config.yml
+        ;;
+    4)
+        sed -i "s/USER_PANEL_TYPE/Proxypanel/g" /tmp/config.yml
+        ;;
+    *)
+    
     ## modify v2board info
     echo -e "> 修改v2board域名"
     read -e -r -p "请输入v2board域名（默认：${V2BOARD_URL}）：" input
