@@ -159,6 +159,10 @@ modify_xrayr_config() {
         sed -i "s/USER_PANEL_TYPE/Proxypanel/g" /tmp/config.yml
         ;;
     *)
+        echo -e "${red}请输入正确的数字 [1-4]${plain}"
+        exit 1
+        ;;
+    esac
     
     ## modify v2board info
     echo -e "> 修改v2board域名"
