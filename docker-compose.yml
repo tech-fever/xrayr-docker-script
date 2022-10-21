@@ -2,7 +2,7 @@ version: "3"
 
 services:
   xrayr:
-    image: crackair/xrayr:latest
+    image: ghcr.io/xrayr-project/xrayr:latest
     restart: always
     network_mode: "host"
     volumes:
