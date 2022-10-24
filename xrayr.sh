@@ -391,12 +391,18 @@ show_config() {
 }
 
 uninstall() {
+    # 确认是否卸载
+    echo -e "> 确认是否卸载xrayr"
+    read -p "请输入y/n：" confirm
+    if [[ $confirm == "y" ]]; then
+        echo -e "> 卸载xrayr"
+        cd $XRAYR_PATH && docker-compose down
+        rm -rf $XRAYR_PATH
+        echo -e "${green}卸载成功${plain}"
+    else
+        echo -e "${green}取消卸载${plain}"
+    fi
     echo -e "> 卸载xrayr"
-
-    cd $XRAYR_PATH && docker-compose down
-    rm -rf $XRAYR_PATH
-    docker rmi -f crackair/xrayr:latest > /dev/null 2>&1
-    clean_all
 
     if [[ $# == 0 ]]; then
         before_show_menu
