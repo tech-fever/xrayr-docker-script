@@ -402,7 +402,6 @@ uninstall() {
     else
         echo -e "${green}取消卸载${plain}"
     fi
-    echo -e "> 卸载xrayr"
 
     if [[ $# == 0 ]]; then
         before_show_menu
