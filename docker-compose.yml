@@ -4,6 +4,7 @@ services:
   xrayr:
     image: ghcr.io/xrayr-project/xrayr:latest
     restart: always
+    container_name: xrayr
     network_mode: "host"
     volumes:
       - ./XrayR/:/etc/XrayR/
