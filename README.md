@@ -2,10 +2,17 @@
 
 使用方法：
 ```bash
-bash <(curl -sL https://raw.githubusercontent.com/tech-fever/xrayr-docker-script/main/xrayr.sh)
+curl -sL https://raw.githubusercontent.com/tech-fever/xrayr-docker-script/main/xrayr.sh -o xrayr.sh && chmod +x xrayr.sh && sudo ./xrayr.sh
 ```
 
 目前只在ubuntu 20.04 LTS 上实验过，不保证可用性。
+
+2022年12月17日更新：
+最近xrayr和v2board都有较大更新，本脚本也相应进行了更新。对于在这之前用过脚本想要更新到新版的，请使用
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/tech-fever/xrayr-docker-script/main/update.sh)
+```
+
 
 # 支持
 
