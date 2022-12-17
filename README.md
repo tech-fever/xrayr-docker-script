@@ -2,7 +2,7 @@
 
 使用方法：
 ```bash
-curl -sL https://raw.githubusercontent.com/tech-fever/xrayr-docker-script/main/xrayr.sh -o xrayr.sh && chmod +x xrayr.sh && sudo ./xrayr.sh
+curl -L https://raw.githubusercontent.com/tech-fever/xrayr-docker-script/main/xrayr.sh -o xrayr.sh && chmod +x xrayr.sh && ./xrayr.sh
 ```
 
 目前只在ubuntu 20.04 LTS 上实验过，不保证可用性。
