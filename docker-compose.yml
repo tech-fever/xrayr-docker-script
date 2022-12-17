@@ -7,4 +7,4 @@ services:
     network_mode: "host"
     volumes:
       - ./XrayR/:/etc/XrayR/
-      - ./config.yml:/etc/XrayR/config.yml
+      # - ./XrayR/config.yml:/etc/XrayR/config.yml

@@ -19,10 +19,10 @@ os_arch=""
 Get_Docker_URL="https://get.docker.com"
 GITHUB_URL="github.com"
 
-# 请填写你的v2board域名，例如：https://v2board.com/
-V2BOARD_URL="https://v2board.com/"
-# 请填写前端的api key，例如：123456789
-V2BOARD_API_KEY="your_api_key"
+# 请填写你的面板域名，例如：https://v2board.com/
+PANEL_URL="https://v2board.com/"
+# 请填写面板的api key，例如：123456789
+PANEL_API_KEY="your_api_key"
 
 pre_check() {
     # check root
@@ -63,8 +63,8 @@ install() {
     echo -e "> 安装xrayr"
 
     # check directory
-    if [ ! -d "$XRAYR_PATH" ]; then
-        mkdir -p $XRAYR_PATH
+    if [ ! -d "$XRAYR_PATH/XRAYR" ]; then
+        mkdir -p $XRAYR_PATH/XRAYR
     else
         echo "您可能已经安装过xrayr，重复安装会覆盖数据，请注意备份。"
         read -e -r -p "是否退出安装? [Y/n] " input
@@ -144,6 +144,10 @@ modify_xrayr_config() {
     echo -e "2. V2board"
     echo -e "3. PMpanel"
     echo -e "4. Proxypanel"
+    echo -e "5. NewV2board"
+    echo -e "其中 NewV2board 为xrayr v0.8.7+开始支持的新版V2board，如果您的V2board版本 >= 1.7.0，请选择NewV2board"
+    echo -e "${red}如果您的V2board版本==1.6.1，请尽快升级！${plain}"
+    echo -e "V2board 老版本API将于 2023.6.1后移除，请尽快升级"
     read -e -p "请输入数字 [1-4]: " panel_type
     case $panel_type in
     1)
@@ -158,31 +162,34 @@ modify_xrayr_config() {
     4)
         sed -i "s/USER_PANEL_TYPE/Proxypanel/g" /tmp/config.yml
         ;;
+    5)
+        sed -i "s/USER_PANEL_TYPE/NewV2board/g" /tmp/config.yml
+        ;;
     *)
         echo -e "${red}请输入正确的数字 [1-4]${plain}"
         exit 1
         ;;
     esac
     
-    ## modify v2board info
-    echo -e "> 修改v2board域名"
-    read -e -r -p "请输入v2board域名（默认：${V2BOARD_URL}）：" input
+    ## modify panel info
+    echo -e "> 修改面板域名"
+    read -e -r -p "请输入面板域名（默认：${PANEL_URL}）：" input
     if [[ $input != "" ]]; then
-        V2BOARD_URL=$input
+        PANEL_URL=$input
     fi
-    read -e -r -p "请输入v2board api key（默认：${V2BOARD_API_KEY}）：" input
+    read -e -r -p "请输入面板 api key（默认：${PANEL_API_KEY}）：" input
     if [[ $input != "" ]]; then
-        V2BOARD_API_KEY=$input
+        PANEL_API_KEY=$input
     fi
-    V2BOARD_URL=$(echo $V2BOARD_URL | sed -e 's/[]\/&$*.^[]/\\&/g')
-    V2BOARD_API_KEY=$(echo $V2BOARD_API_KEY | sed -e 's/[]\/&$*.^[]/\\&/g')
-    sed -i "s/USER_V2BOARD_DOMAIN/${V2BOARD_URL}/g" /tmp/config.yml
-    sed -i "s/USER_V2BOARD_API_KEY/${V2BOARD_API_KEY}/g" /tmp/config.yml
-    echo -e "> 当前域名: ${green}${V2BOARD_URL}${plain}"
-    echo -e "> 当前api key: ${green}${V2BOARD_API_KEY}${plain}"
+    PANEL_URL=$(echo $PANEL_URL | sed -e 's/[]\/&$*.^[]/\\&/g')
+    PANEL_API_KEY=$(echo $PANEL_API_KEY | sed -e 's/[]\/&$*.^[]/\\&/g')
+    sed -i "s/USER_PANEL_DOMAIN/${PANEL_URL}/g" /tmp/config.yml
+    sed -i "s/USER_PANEL_API_KEY/${PANEL_API_KEY}/g" /tmp/config.yml
+    echo -e "> 当前域名: ${green}${PANEL_URL}${plain}"
+    echo -e "> 当前api key: ${green}${PANEL_API_KEY}${plain}"
 
     ## read NODE_ID
-    read -e -r -p "请输入节点ID（必须与v2board设定的保持一致）：" input
+    read -e -r -p "请输入节点ID（必须与面板设定的保持一致）：" input
     NODE_ID=$input
     echo -e "节点ID为: ${green}${NODE_ID}${plain}"
     sed -i "s/USER_NODE_ID/${NODE_ID}/g" /tmp/config.yml
@@ -273,7 +280,7 @@ modify_xrayr_config() {
     fi
 
     # replace config.yml
-    mv /tmp/config.yml $XRAYR_PATH/config.yml
+    mv /tmp/config.yml $XRAYR_PATH/XRAYR/config.yml
     mv /tmp/docker-compose.yml $XRAYR_PATH/docker-compose.yml
     echo -e "xrayr配置 ${green}修改成功，请稍等重启生效${plain}"
     # get NODE_IP
@@ -359,9 +366,10 @@ show_config() {
     echo -e "> 查看xrayr配置"
 
     cd $XRAYR_PATH
-    
-    V2BOARD_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
-    V2BOARD_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+
+    PANEL_TYPE=$(cat config.yml | grep "PanelType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    PANEL_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
+    PANEL_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
     NODE_IP=$(curl -s ip.sb)
     NODE_ID=$(cat config.yml | grep "NodeID" | awk -F ':' '{print $2}')
     NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
@@ -373,8 +381,9 @@ show_config() {
     CLOUDFLARE_API_KEY=$(cat config.yml | grep "CLOUDFLARE_API_KEY" | awk -F ':' '{print $2}')
 
     echo -e "
-    v2board前端域名：${green}${V2BOARD_URL}${plain}
-    v2board api key：${green}${V2BOARD_API_KEY}${plain}
+    面板类型：${green}${PANEL_TYPE}${plain}
+    前端域名：${green}${PANEL_URL}${plain}
+    api key：${green}${PANEL_API_KEY}${plain}
     节点IP：${green}${NODE_IP}${plain}
     节点ID：${green}${NODE_ID}${plain}
     节点类型：${green}${NODE_TYPE}${plain}
@@ -421,6 +430,20 @@ clean_all() {
 }
 }
 
+install_bbr() {
+    # 判断是否安装了bbr
+    lsmod | grep bbr
+    if [[ $? == 0 ]]; then
+        echo -e "${green}已安装bbr 无需安装${plain}"
+    else
+        echo -e "> 安装bbr"
+        wget --no-check-certificate -O /opt/bbr.sh https://github.com/teddysun/across/raw/master/bbr.sh
+        chmod 755 /opt/bbr.sh
+        /opt/bbr.sh
+    fi
+
+}
+
 show_menu() {
     echo -e "
     ${green}xrayr Docker安装管理脚本${plain}
@@ -432,6 +455,7 @@ show_menu() {
     ${green}6.${plain}  查看xrayr日志
     ${green}7.${plain}  查看xrayr配置
     ${green}8.${plain}  卸载xrayr
+    ${green}9.${plain}  安装bbr
     ————————————————
     ${green}0.${plain}  退出脚本
     "
@@ -464,6 +488,9 @@ show_menu() {
         ;;
     8)
         uninstall
+        ;;
+    9)
+        install_bbr
         ;;
     *)
         echo -e "${red}请输入正确的数字 [0-8]${plain}"
