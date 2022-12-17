@@ -1,4 +1,4 @@
-# 基于docker部署XrayR作者原版的一键脚本
+# 基于docker部署XrayR的一键脚本
 
 使用方法：
 ```bash
@@ -9,7 +9,7 @@ bash <(curl -sL https://raw.githubusercontent.com/tech-fever/xrayr-docker-script
 
 # 支持
 
-- [x] 仅支持v2board
+- [x] 仅测试过v2board
 - [x] 支持V2ray ShadowSocks Trojan
 - [x] 支持设置有无证书三种证书申请方式：`dns file http`，其中 `dns` 证书申请仅支持Cloudflare dns
 - [x] 支持查看xrayr配置
@@ -26,6 +26,7 @@ xrayr Docker安装管理脚本
     6.  查看xrayr日志
     7.  查看xrayr配置
     8.  卸载xrayr
+    9.  安装bbr
     ————————————————
     0.  退出脚本
 ```
