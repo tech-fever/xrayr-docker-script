@@ -366,19 +366,19 @@ show_config() {
     echo -e "> 查看xrayr配置"
 
     cd $XRAYR_PATH
-
-    PANEL_TYPE=$(cat config.yml | grep "PanelType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
-    PANEL_URL=$(cat config.yml | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
-    PANEL_API_KEY=$(cat config.yml | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CONFIG_FILE="${XRAYR_PATH}/XrayR/config.yml"
+    PANEL_TYPE=$(cat ${CONFIG_FILE} | grep "PanelType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    PANEL_URL=$(cat ${CONFIG_FILE} | grep "ApiHost" | awk -F ':' '{print $2 $3}' | awk -F '"' '{print $2}')
+    PANEL_API_KEY=$(cat ${CONFIG_FILE} | grep "ApiKey" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
     NODE_IP=$(curl -s ip.sb)
-    NODE_ID=$(cat config.yml | grep "NodeID" | awk -F ':' '{print $2}')
-    NODE_TYPE=$(cat config.yml | grep "NodeType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
-    CertMode=$(cat config.yml | grep "CertMode" | head -n 1 | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
-    CertFile=$(cat config.yml | grep "CertFile" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
-    KeyFile=$(cat config.yml | grep "KeyFile" | awk -F ':' '{print $2}')
-    NODE_DOMAIN=$(cat config.yml | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-    CLOUDFLARE_EMAIL=$(cat config.yml | grep "CLOUDFLARE_EMAIL" | awk -F ':' '{print $2}')
-    CLOUDFLARE_API_KEY=$(cat config.yml | grep "CLOUDFLARE_API_KEY" | awk -F ':' '{print $2}')
+    NODE_ID=$(cat ${CONFIG_FILE} | grep "NodeID" | awk -F ':' '{print $2}')
+    NODE_TYPE=$(cat ${CONFIG_FILE} | grep "NodeType" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    CertMode=$(cat ${CONFIG_FILE} | grep "CertMode" | head -n 1 | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    CertFile=$(cat ${CONFIG_FILE} | grep "CertFile" | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}')
+    KeyFile=$(cat ${CONFIG_FILE} | grep "KeyFile" | awk -F ':' '{print $2}')
+    NODE_DOMAIN=$(cat ${CONFIG_FILE} | grep "CertDomain" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+    CLOUDFLARE_EMAIL=$(cat ${CONFIG_FILE} | grep "CLOUDFLARE_EMAIL" | awk -F ':' '{print $2}')
+    CLOUDFLARE_API_KEY=$(cat ${CONFIG_FILE} | grep "CLOUDFLARE_API_KEY" | awk -F ':' '{print $2}')
 
     echo -e "
     面板类型：${green}${PANEL_TYPE}${plain}
