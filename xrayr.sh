@@ -63,8 +63,8 @@ install() {
     echo -e "> 安装xrayr"
 
     # check directory
-    if [ ! -d "$XRAYR_PATH/XRAYR" ]; then
-        mkdir -p $XRAYR_PATH/XRAYR
+    if [ ! -d "$XRAYR_PATH/XrayR" ]; then
+        mkdir -p $XRAYR_PATH/XrayR
     else
         echo "您可能已经安装过xrayr，重复安装会覆盖数据，请注意备份。"
         read -e -r -p "是否退出安装? [Y/n] " input
@@ -280,7 +280,7 @@ modify_xrayr_config() {
     fi
 
     # replace config.yml
-    mv /tmp/config.yml $XRAYR_PATH/XRAYR/config.yml
+    mv /tmp/config.yml $XRAYR_PATH/XrayR/config.yml
     mv /tmp/docker-compose.yml $XRAYR_PATH/docker-compose.yml
     echo -e "xrayr配置 ${green}修改成功，请稍等重启生效${plain}"
     # get NODE_IP
