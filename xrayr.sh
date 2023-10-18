@@ -148,7 +148,7 @@ modify_xrayr_config() {
     echo -e "其中 NewV2board 为xrayr v0.8.7+开始支持的新版V2board，如果您的V2board版本 >= 1.7.0，请选择NewV2board"
     echo -e "${red}如果您的V2board版本==1.6.1，请尽快升级！${plain}"
     echo -e "V2board 老版本API将于 2023.6.1后移除，请尽快升级"
-    read -e -p "请输入数字 [1-4]: " panel_type
+    read -e -p "请输入数字 [1-5]: " panel_type
     case $panel_type in
     1)
         sed -i "s/USER_PANEL_TYPE/SSpanel/g" /tmp/config.yml
